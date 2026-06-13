@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pra Você</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;overflow:hidden;background:radial-gradient(circle at center,#1b0008 0%,#070006 45%,#000 100%);font-family:'Segoe UI',Arial,sans-serif;display:flex;align-items:center;justify-content:center;color:#fff}
+  .scene{position:relative;width:100vw;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;perspective:900px}
+  .stars,.petals,.butterflies{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .star{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffd6a0;box-shadow:0 0 10px #ff4545,0 0 18px #ffd700;animation:twinkle var(--d) infinite ease-in-out;opacity:.8}
+  @keyframes twinkle{0%,100%{transform:scale(.4);opacity:.25}50%{transform:scale(1.7);opacity:1}}
+  .orb{position:absolute;width:310px;height:310px;border-radius:50%;border:2px solid rgba(255,40,70,.55);box-shadow:0 0 28px #ff1744, inset 0 0 26px rgba(255,60,80,.35);animation:spin 8s linear infinite;transform:rotateX(68deg) rotateZ(0deg);filter:blur(.2px)}
+  .orb::before,.orb::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(255,215,130,.35)}
+  .orb::after{inset:30px;border-color:rgba(255,255,255,.18)}
+  @keyframes spin{to{transform:rotateX(68deg) rotateZ(360deg)}}
+  .glow{position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,0,55,.42),rgba(255,0,55,.12) 45%,transparent 72%);filter:blur(10px);animation:pulse 2.8s ease-in-out infinite}
+  @keyframes pulse{50%{transform:scale(1.2);opacity:.65}}
+  .content{position:relative;z-index:2;text-align:center;animation:enter 2s ease forwards;transform:translateY(70px) scale(.8);opacity:0}
+  @keyframes enter{to{transform:translateY(0) scale(1);opacity:1}}
+  h1{font-size:clamp(42px,10vw,86px);font-weight:800;letter-spacing:2px;margin-bottom:22px;color:#fff;text-shadow:0 0 8px #fff,0 0 18px #ff1744,0 0 34px #ff1744,0 0 60px #ff0033;animation:title 3s ease-in-out infinite}
+  @keyframes title{50%{text-shadow:0 0 12px #fff,0 0 28px #ff315f,0 0 55px #ff1744}}
+  .bouquet{position:relative;width:min(86vw,460px);height:520px;margin:auto;filter:drop-shadow(0 0 28px rgba(255,0,55,.55));animation:float 4s ease-in-out infinite}
+  @keyframes float{50%{transform:translateY(-14px)}}
+  .stem{position:absolute;bottom:70px;left:50%;width:7px;height:250px;background:linear-gradient(#38ff7a,#075a24);border-radius:8px;transform-origin:bottom;box-shadow:0 0 10px rgba(0,255,120,.35)}
+  .wrap{position:absolute;left:50%;bottom:36px;width:230px;height:245px;transform:translateX(-50%);background:linear-gradient(145deg,rgba(255,205,225,.96),rgba(255,100,145,.75),rgba(130,0,45,.9));clip-path:polygon(8% 0,92% 0,67% 100%,33% 100%);border:1px solid rgba(255,255,255,.45);box-shadow:inset 0 0 28px rgba(255,255,255,.22),0 0 25px rgba(255,25,80,.4)}
+  .wrap::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-80px);animation:shine 4s infinite}
+  @keyframes shine{60%,100%{transform:translateX(260px)}}
+  .ribbon{position:absolute;bottom:58px;left:50%;transform:translateX(-50%);font-size:72px;text-shadow:0 0 15px #ff1744;z-index:5}
+  .rose{position:absolute;width:78px;height:78px;transform:translate(-50%,-50%) scale(0);animation:bloom .9s ease forwards;z-index:4}
+  @keyframes bloom{to{transform:translate(-50%,-50%) scale(1)}}
+  .rose .petal{position:absolute;left:50%;top:50%;width:38px;height:52px;background:radial-gradient(circle at 35% 25%,#ffb4c2 0%,#ff1f45 35%,#910018 78%);border-radius:60% 60% 45% 45%;transform-origin:50% 88%;box-shadow:inset 0 -8px 13px rgba(80,0,10,.55),0 0 12px rgba(255,20,60,.8)}
+  .rose .p1{transform:translate(-50%,-72%) rotate(0deg)}.rose .p2{transform:translate(-50%,-72%) rotate(60deg)}.rose .p3{transform:translate(-50%,-72%) rotate(120deg)}.rose .p4{transform:translate(-50%,-72%) rotate(180deg)}.rose .p5{transform:translate(-50%,-72%) rotate(240deg)}.rose .p6{transform:translate(-50%,-72%) rotate(300deg)}
+  .rose .center{position:absolute;left:50%;top:50%;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#ffd1da,#ff244a 42%,#60000f);transform:translate(-50%,-50%);box-shadow:0 0 16px #ff1744,inset 0 0 10px #5b0010}
+  .leaf{position:absolute;width:42px;height:22px;background:linear-gradient(90deg,#0a6b27,#3eff7e);border-radius:100% 0 100% 0;box-shadow:0 0 12px rgba(0,255,130,.4);z-index:1}
+  .butterfly{position:absolute;font-size:34px;filter:drop-shadow(0 0 12px #ffd36d);animation:fly 9s ease-in-out infinite;opacity:.9}
+  @keyframes fly{0%{transform:translate(-10vw,70vh) rotate(-20deg)}50%{transform:translate(55vw,18vh) rotate(18deg)}100%{transform:translate(110vw,62vh) rotate(-15deg)}}
+  .fall{position:absolute;font-size:22px;color:#ff2a50;text-shadow:0 0 10px #ff1744;animation:fall linear infinite;opacity:.8}
+  @keyframes fall{from{transform:translateY(-10vh) rotate(0)}to{transform:translateY(112vh) rotate(360deg)}}
+  .tap{position:absolute;bottom:22px;width:100%;text-align:center;color:rgba(255,255,255,.75);font-size:15px;text-shadow:0 0 12px #ff1744;z-index:3}
+  @media(max-height:680px){.bouquet{height:430px;transform:scale(.83)}h1{margin-bottom:0}.tap{display:none}}
+
+  .intro{position:fixed;inset:0;z-index:20;background:radial-gradient(circle at center,#180006 0%,#050003 52%,#000 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 1s ease,visibility 1s ease;overflow:hidden}
+  .intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+  .heart{font-size:92px;color:#ff1744;text-shadow:0 0 12px #fff,0 0 30px #ff1744,0 0 70px #ff0033;animation:heartPulse 1.3s ease-in-out infinite;margin-bottom:32px}
+  @keyframes heartPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+  .openBtn{border:none;border-radius:999px;padding:15px 34px;font-size:20px;font-weight:700;color:#fff;background:linear-gradient(90deg,#ff1744,#9b001b);box-shadow:0 0 20px #ff1744,0 0 45px rgba(255,0,50,.45);cursor:pointer;animation:btnGlow 2s ease-in-out infinite}
+  @keyframes btnGlow{50%{box-shadow:0 0 30px #ff5a7a,0 0 65px rgba(255,0,50,.7);transform:translateY(-2px)}}
+  .introParticle{position:absolute;color:#ff315f;text-shadow:0 0 12px #ff1744;animation:introFloat linear infinite;opacity:.75}
+  @keyframes introFloat{from{transform:translateY(110vh) rotate(0deg)}to{transform:translateY(-15vh) rotate(360deg)}}
+  body:not(.opened) .content{opacity:0;animation:none;transform:translateY(60px) scale(.82)}
+  body.opened .content{animation:enter 1.7s ease forwards}
+
+</style>
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <div class="heart">❤️</div>
+  <button class="openBtn" id="openBtn">Abrir Presente</button>
+</div>
+
+<div class="scene">
+  <div class="stars" id="stars"></div>
+  <div class="glow"></div>
+  <div class="orb"></div>
+  <div class="petals" id="petals"></div>
+  <div class="butterflies"><div class="butterfly" style="animation-delay:0s">🦋</div><div class="butterfly" style="animation-delay:-4s;font-size:27px">🦋</div></div>
+  <main class="content">
+    <h1>Pra Você</h1>
+    <div class="bouquet" id="bouquet">
+      <div class="wrap"></div>
+      <div class="ribbon">🎀</div>
+    </div>
+  </main>
+  <div class="tap">Feito com carinho</div>
+</div>
+<script>
+
+const intro=document.getElementById('intro');
+const openBtn=document.getElementById('openBtn');
+for(let i=0;i<28;i++){const p=document.createElement('span');p.className='introParticle';p.textContent=Math.random()>.45?'✦':'❦';p.style.left=Math.random()*100+'%';p.style.fontSize=(13+Math.random()*22)+'px';p.style.animationDuration=(4+Math.random()*5)+'s';p.style.animationDelay=(-Math.random()*6)+'s';intro.appendChild(p)}
+openBtn.addEventListener('click',()=>{document.body.classList.add('opened');intro.classList.add('hide')});
+
+const stars=document.getElementById('stars');
+for(let i=0;i<90;i++){const s=document.createElement('span');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--d',(1.6+Math.random()*3.6)+'s');stars.appendChild(s)}
+const petals=document.getElementById('petals');
+for(let i=0;i<30;i++){const p=document.createElement('span');p.className='fall';p.textContent='❦';p.style.left=Math.random()*100+'%';p.style.animationDuration=(5+Math.random()*7)+'s';p.style.animationDelay=(-Math.random()*10)+'s';p.style.fontSize=(15+Math.random()*20)+'px';petals.appendChild(p)}
+const bouquet=document.getElementById('bouquet');
+const roses=[
+[50,17,1.12],[36,23,1],[64,23,1],[25,33,.95],[50,32,1.05],[75,33,.95],[34,43,.98],[65,43,.98],[50,51,1],[20,48,.82],[80,48,.82],[42,61,.82],[58,61,.82]
+];
+roses.forEach((r,i)=>{const rose=document.createElement('div');rose.className='rose';rose.style.left=r[0]+'%';rose.style.top=r[1]+'%';rose.style.width=78*r[2]+'px';rose.style.height=78*r[2]+'px';rose.style.animationDelay=(.6+i*.11)+'s';rose.innerHTML='<span class="petal p1"></span><span class="petal p2"></span><span class="petal p3"></span><span class="petal p4"></span><span class="petal p5"></span><span class="petal p6"></span><span class="center"></span>';bouquet.appendChild(rose);
+ const stem=document.createElement('div');stem.className='stem';stem.style.transform=`translateX(-50%) rotate(${(r[0]-50)*.45}deg)`;stem.style.height=(265-r[1]*1.8)+'px';bouquet.insertBefore(stem,bouquet.firstChild);
+});
+for(let i=0;i<12;i++){const l=document.createElement('div');l.className='leaf';l.style.left=(28+Math.random()*44)+'%';l.style.bottom=(130+Math.random()*120)+'px';l.style.transform=`rotate(${Math.random()>0.5?'-':'+'}${20+Math.random()*50}deg)`;bouquet.insertBefore(l,bouquet.firstChild)}
+</script>
+</body>
+</html>
